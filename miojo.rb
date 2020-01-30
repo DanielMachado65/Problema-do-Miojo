@@ -1,32 +1,49 @@
-# frozen_string_literal: tru
+require 'pry'
+
+# frozen_string_literal: true
 class Miojo
-  def initialize(attrs)
-    @time = attrs[:time].to_i
-    @hourglass1 = attrs[:hourglass1].to_i
-    @hourglass2 = attrs[:hourglass2].to_i
+  def calculate_minimum_time(time, hourglass1, hourglass2)
+    init(time, hourglass1, hourglass2)
+
+    return false if permitted?
+    return false unless have_solution?
+
+    max_a = remain(@time, @hourglass1, @hourglass2)
+    max_b = remain(@time, @hourglass2, @hourglass1)
+    
+    cooking_time = [max_a*@hourglass1, max_b*@hourglass2].min
+  rescue NoMethodError
+    return false
+  end
+
+  def init(time, hourglass1, hourglass2)
+    @time = time.to_i
+    @hourglass1 = hourglass1.to_i
+    @hourglass2 = hourglass2.to_i
+  end
+
+  def have_solution?
+    (@time%mdc(@hourglass1, @hourglass2)) == 0
   end
 
   def permitted?
     (@time > @hourglass1) || (@time > @hourglass2)
   end
 
-  def calculate_minimum_time
-    return 'ampulheta não podem ter o tempo menor do que o tempo do prepararo do miojo' if permitted?
+  private
 
-    min = [@hourglass1, @hourglass2].min
-    max = [@hourglass1, @hourglass2].max
-    min *= 2
-
-    cooking_time = min - max
-    "#{cooking_time == @time ? "Pode ser realizado o prepararo e o tempo minimo será: #{min} min" : 'Não é possivel fazer o miojo'}"
+  def remain(time, a, b)
+    (1..b).each {|i| return i if ((a * i) % b === time)}
   end
-end
-
-# running
-if ARGV.length == 3
-  p Miojo.new({time: ARGV[0],
-               hourglass1: ARGV[1],
-               hourglass2: ARGV[2]}).calculate_minimum_time
-else
-  p 'não foi inserido os parametros corretos'
+  
+  def mdc(a, b)
+    return 1 if a == b
+    if (a == 0) then
+      b
+    elsif(a > b) then
+      mdc(a % b, b)
+    else
+      mdc(b, a)
+    end
+  end 
 end

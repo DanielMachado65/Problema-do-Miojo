@@ -1,5 +1,7 @@
 # Problema-do-Miojo
 
+> Daniel Machado
+
 ## Problema do Miojo:
 
 > João é um fanático por miojos; ele os adora, e, como era de se esperar, ele levou vários pacotes quando foi acampar com seus colegas. Como João só gosta de miojos feitos com o tempo exato, ele se deseperou ao perceber que havia esquecido seu relógio em casa.
@@ -16,6 +18,24 @@ Assim, apesar do miojo levar apenas três minutos para ser cozido, ele precisa d
 
 Faça um programa que, dado o tempo de preparo do miojo, e os tempos das duas ampulhetas (ambos maiores que o tempo do miojo), determina o tempo mínimo necessário para o miojo ficar pronto ou se não é possível cozinhar o miojo no tempo exato com as ampulhetas disponíveis.
 
+## Running this code:
+
 ```sh
-ruby miojo.rb <tempo do cozimento> <tempo da ambulheta 1> <tempo da ambulheta 2>
+rspec miojo_rspec.rb
 ```
+
+## @Comentários Pessoais:
+
+no problema código que eu fiz, pensei numa lógica mais simples, chegando à: 
+
+```ruby
+min = [@hourglass1, @hourglass2].min
+max = [@hourglass1, @hourglass2].max
+min *= 2
+
+cooking_time = min - max
+```
+
+mas em segunda análise deparei com a seguinte situação, tempos maiores que 10, começaram a dar erro, para corrigir, comecei a estudar o fator de mdc (para achar a verificação a solução entre o minimo dos tempos com o tempo da ambulheta). Enfim o código pode ser visto no seguinte arquivo: 
+
+* ### [miojo.rb](./miojo.rb)
